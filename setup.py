@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 import sys
 import shutil
+import zipfile
 from pathlib import Path
 
 
@@ -12,31 +13,51 @@ class CustomInstall(install):
         install.run(self)
         self._deploy_files()
 
+    @staticmethod
+    def _extract_subdir(zip_path, target_subdir, output_dir):
+        target_subdir = target_subdir.rstrip("/") + "/"
+        output_dir = Path(output_dir)
+
+        with zipfile.ZipFile(zip_path) as zip_file:
+            for member in zip_file.namelist():
+                if not member.startswith(target_subdir):
+                    continue
+
+                relative_path = member[len(target_subdir) :]
+                if not relative_path:
+                    continue
+
+                dest_path = output_dir / relative_path
+
+                if member.endswith("/"):
+                    dest_path.mkdir(parents=True, exist_ok=True)
+                else:
+                    dest_path.parent.mkdir(parents=True, exist_ok=True)
+                    with zip_file.open(member) as source, open(
+                        dest_path, "wb"
+                    ) as target:
+                        shutil.copyfileobj(source, target)
+
     def _deploy_files(self):
-        data_dir = Path(__file__).parent / "src" / "tkinter_embed" / "data"
+        data_zip = Path(__file__).parent / "src" / "tkinter_embed" / "data.zip"
         py_tag = f"cp{sys.version_info.major}{sys.version_info.minor}"
-        src_dir = data_dir / py_tag
 
         if hasattr(self, "install_lib") and self.install_lib:
             dest_dir = Path(self.install_lib).resolve()
         else:
             dest_dir = Path(sys.executable).parent.resolve()
 
-        if src_dir.exists():
-            for item in src_dir.iterdir():
-                dest_path = dest_dir / item.name
-                shutil.move(str(item), str(dest_path))
-            print("Tkinter files deployment completed!")
-        else:
-            print(f"Warning: Source directory not found: {src_dir}")
+        print(f"Extracting {py_tag} from {data_zip} to {dest_dir}")
+        self._extract_subdir(data_zip, py_tag, dest_dir)
+        print("Tkinter files deployment completed!")
 
-        # Clean up by removing the entire data directory
         try:
-            if data_dir.exists():
-                shutil.rmtree(data_dir)
-                print(f"Removed data directory: {data_dir}")
+            installed_zip = dest_dir / "tkinter_embed" / "data.zip"
+            if installed_zip.exists():
+                installed_zip.unlink()
+                print(f"Removed {installed_zip}")
         except Exception as e:
-            print(f"Warning: Could not remove data directory: {e}")
+            print(f"Warning: Could not remove zip file: {e}")
 
 
 setup(
@@ -51,7 +72,7 @@ setup(
     package_dir={"": "src"},
     package_data={
         "tkinter_embed": [
-            "data/*",
+            "data.zip",
         ],
     },
     classifiers=[
