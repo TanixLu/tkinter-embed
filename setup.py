@@ -62,7 +62,7 @@ class CustomInstall(install):
 
 setup(
     name="tkinter-embed",
-    version="1.0.3",
+    version="1.0.5",
     description="Tkinter for Windows Embedded Python",
     author="Tanix",
     author_email="tanixlu@foxmail.com",

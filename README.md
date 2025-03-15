@@ -3,7 +3,8 @@
 install tkinter for embedded python
 
 ```cmd
-python pip.pyz install tkinter-embed --target .
+.\python pip.pyz install setuptools --target .
+.\python pip.pyz install tkinter-embed --target .
 ```
 
 ## build
