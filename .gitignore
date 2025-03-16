@@ -1,5 +1,5 @@
 __pycache__/
 dist/
 .vscode/
-src/tkinter_embed.egg-info/
+src*/tkinter_embed.egg-info/
 embed/

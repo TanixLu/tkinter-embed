@@ -5,6 +5,14 @@ import shutil
 import zipfile
 from pathlib import Path
 
+python_main_version = 3
+
+python_minor_version = 13
+package_minor_version = 0
+python_version = f"{python_main_version}.{python_minor_version}"
+package_version = f"{python_version}.{package_minor_version}"
+src_dir = "src" + python_version
+
 
 class CustomInstall(install):
     """Custom installation command to deploy tkinter files after installation"""
@@ -39,7 +47,7 @@ class CustomInstall(install):
                         shutil.copyfileobj(source, target)
 
     def _deploy_files(self):
-        data_zip = Path(__file__).parent / "src" / "tkinter_embed" / "data.zip"
+        data_zip = Path(__file__).parent / src_dir / "tkinter_embed" / "data.zip"
         py_tag = f"cp{sys.version_info.major}{sys.version_info.minor}"
 
         if hasattr(self, "install_lib") and self.install_lib:
@@ -62,27 +70,22 @@ class CustomInstall(install):
 
 setup(
     name="tkinter-embed",
-    version="1.0.5",
+    version=package_version,
     description="Tkinter for Windows Embedded Python",
     author="Tanix",
     author_email="tanixlu@foxmail.com",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=find_packages(where=src_dir),
+    package_dir={"": src_dir},
     package_data={
         "tkinter_embed": [
             "data.zip",
         ],
     },
-    python_requires=">=3.8",
+    python_requires=f"=={python_version}.*",
     classifiers=[
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
+        f"Programming Language :: Python :: {python_version}",
         "Operating System :: Microsoft :: Windows",
         "Topic :: Software Development",
     ],
