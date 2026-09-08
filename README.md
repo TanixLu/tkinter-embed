@@ -2,25 +2,26 @@
 
 **Install Tkinter for Embedded Python**
 
-## Prerequisites
+## Installation
 
-1. Download `pip.pyz` or install pip:
-   - Option 1: Download `pip.pyz` from https://bootstrap.pypa.io/pip/pip.pyz
-   - Option 2: Install pip using get-pip.py
-     - Download from: https://bootstrap.pypa.io/get-pip.py
-     - Run with your embedded Python: `python.exe get-pip.py --target your_embed_folder`
+### Option 1: Install with pip
 
-2. Install Setuptools first.
+1. Download [`pip.pyz`](https://bootstrap.pypa.io/pip/pip.pyz), or install pip with [`get-pip.py`](https://bootstrap.pypa.io/get-pip.py):
 
-The following examples use the pip.pyz method for installation.
+   ```cmd
+   python.exe get-pip.py --target your_embed_folder
+   ```
 
-## Installation Steps
+2. In your embedded Python folder, install Setuptools and `tkinter-embed`:
 
-Navigate to your embedded Python folder and run:
-```cmd
-.\python pip.pyz install setuptools --target .
-.\python pip.pyz install tkinter-embed --target .
-```
+   ```cmd
+   .\python.exe pip.pyz install setuptools --target .
+   .\python.exe pip.pyz install tkinter-embed --target .
+   ```
+
+### Option 2: Manual installation
+
+Download the `data.zip` file for your Python version, then copy all contents of the `cpxxx` directory into your embedded Python folder. Do not copy the `cpxxx` directory itself.
 
 ## Build Package
 ```cmd
