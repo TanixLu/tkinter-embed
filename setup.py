@@ -7,7 +7,7 @@ from pathlib import Path
 
 python_main_version = 3
 
-python_minor_version = 13
+python_minor_version = 14
 package_minor_version = 0
 python_version = f"{python_main_version}.{python_minor_version}"
 package_version = f"{python_version}.{package_minor_version}"

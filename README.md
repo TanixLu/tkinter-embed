@@ -27,6 +27,12 @@ Navigate to your embedded Python folder and run:
 python -m build --sdist
 ```
 
+With uv:
+
+```cmd
+uv run --with build python -m build --sdist
+```
+
 ## Test Installation
 ```cmd
 pip install -v --target embed .\dist\tkinter_embed-1.0.0.tar.gz
@@ -35,4 +41,10 @@ pip install -v --target embed .\dist\tkinter_embed-1.0.0.tar.gz
 ## Publish to PyPI
 ```cmd
 python -m twine upload dist/*
+```
+
+With uv:
+
+```cmd
+uv run --with twine python -m twine upload dist/*
 ```
