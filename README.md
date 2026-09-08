@@ -48,3 +48,10 @@ With uv:
 ```cmd
 uv run --with twine python -m twine upload dist/*
 ```
+
+## License
+
+The original code in this repository is released into the public domain.
+You may use, copy, modify, and distribute it for any purpose, without permission or attribution.
+
+Tcl/Tk files included in this package are third-party components extracted from the official CPython Windows AMD64 distribution and remain subject to their original licenses. The full license text is included in the distributed package files.
